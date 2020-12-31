@@ -1,32 +1,32 @@
-/**
+ /**
  * Robinhood API NodeJS Wrapper
- * @author Alejandro U. Alvarez
- * @license AGPLv3 - See LICENSE file for more details
- * @version 1.1.2
+ * @author Ivan Jorge Paifer
  */
 
 'use strict';
 
 // Dependencies
-var request = require('request');
-var Promise = require('promise');
-var _ = require('lodash');
-var queryString = require('query-string');
-var { v4: uuidv4 } = require('uuid');
+const request = require('request');
+const Promise = require('promise');
+const _ = require('lodash');
+const queryString = require('query-string');
+const { v4: uuidv4 } = require('uuid');
 
 function RobinhoodWebApi(opts, callback) {
   /* +--------------------------------+ *
    * |      Internal variables        | *
    * +--------------------------------+ */
-  var _apiUrl = 'https://api.robinhood.com/';
+  const _apiUrl = 'https://api.robinhood.com/';
 
-  var _options = opts || {},
+  var _options = opts || {}
     // Private API Endpoints
-    _endpoints = {
+  const _endpoints = {
       login: 'oauth2/token/',
       logout: 'oauth2/revoke_token/',
-      investment_profile: 'user/investment_profile/',
       accounts: 'accounts/',
+      orders: 'orders/',
+      cancel_order: 'orders/', //API expects https://api.robinhood.com/orders/{{orderId}}/cancel/
+      investment_profile: 'user/investment_profile/',
       ach_iav_auth: 'ach/iav/auth/',
       ach_relationships: 'ach/relationships/',
       ach_transfers: 'ach/transfers/',
@@ -40,8 +40,6 @@ function RobinhoodWebApi(opts, callback) {
       markets: 'markets/',
       notifications: 'notifications/',
       notifications_devices: 'notifications/devices/',
-      orders: 'orders/',
-      cancel_order: 'orders/', //API expects https://api.robinhood.com/orders/{{orderId}}/cancel/
       password_reset: 'password_reset/request/',
       quotes: 'quotes/',
       document_requests: 'upload/document_requests/',
@@ -64,12 +62,12 @@ function RobinhoodWebApi(opts, callback) {
       sp500_down: 'midlands/movers/sp500/?direction=down',
       news: 'midlands/news/',
       tag: 'midlands/tags/tag/'
-    },
-    _clientId = 'c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS',
-    _deviceToken = 'ea9fa5c6-01e0-46c9-8430-5b422c99bd16',
-    _isInit = false,
-    _request = request.defaults(),
-    _private = {
+    }
+    const _clientId = 'c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS'
+    const _deviceToken = 'ea9fa5c6-01e0-46c9-8430-5b422c99bd16'
+    const _isInit = false
+    const _request = request.defaults()
+    const _private = {
       session: {},
       account: null,
       username: null,
@@ -78,8 +76,8 @@ function RobinhoodWebApi(opts, callback) {
       auth_token: null,
       refresh_token: null,
       device_token: null
-    },
-    api = {};
+    }
+    const api = {};
 
   function _init() {
     _private.username = _.has(_options, 'username') ? _options.username : null;
